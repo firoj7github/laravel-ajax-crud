@@ -35,4 +35,36 @@ class ProductController extends Controller
         ]);
 
     }
+
+   
+    public function updateproduct(Request $request){
+
+      $request->validate(
+        [
+            'up_name'=>'required|unique:products,name'.$request->up_id,
+            'up_price'=>'required'
+        ],
+        [
+            'up_name.required'=>'name is required',
+            'up_price.unique'=>'product already exits',
+            'up_price.required'=>'price is required'
+        ]
+        );
+
+        
+            $product=Product::find($request->up_id);
+            $product->name=$request->input('up_name');
+            $product->price=$request->input('up_price');
+            $product->save();
+            return response()->json([
+               'status'=>'success'
+           ]);
+     
+
+         
+
+    }
+    // public function deleteproduct(Request $request){
+        
+    // }
 }
